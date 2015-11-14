@@ -4,7 +4,7 @@ November 14, 2015
 
 
 ## Assumptions:
-- ZIP file containing the dataset has been downloaded and extracted to the working directory `~/R/RepResearch`
+- ZIP file containing the dataset has been downloaded and extracted to the working directory `~/R/RepResearch/RepData_PeerAssessment1`
 
 
 ## Loading and preprocessing the data
