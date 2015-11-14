@@ -1,11 +1,6 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-author: "Dave Richards"
-date: "November 14, 2015"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
+Dave Richards  
+November 14, 2015  
 
 
 ## Assumptions:
@@ -20,7 +15,8 @@ Show any code that is needed to
 
 2. Process/transform the data (if necessary) into a format suitable for your analysis
 
-```{r loading}
+
+```r
 # Loading the data
 setwd("~/R/RepResearch/RepData_PeerAssessment1")
 actData <- read.csv("activity.csv")
@@ -32,7 +28,8 @@ actData$date <- ymd(actData$date)
 
 ## What is mean total number of steps taken per day?
 For this part of the assignment, you can ignore the missing values in the dataset.
-```{r mean_total, fig.height=7, fig.width=7, message=FALSE}
+
+```r
 library(dplyr)
 actNoNA <- actData[!is.na(actData$steps),]
 # Calculate the total number of steps taken per day
@@ -44,13 +41,30 @@ hist(
         stepsPerDay$totalSteps, col = "red",
         xlab = "Number of steps per day", main = "Histogram of steps per day"
 )
+```
+
+![](PA1_template_files/figure-html/mean_total-1.png) 
+
+```r
 # Calculate/report the mean and median of the total number of steps taken per day
 mean(stepsPerDay$totalSteps)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 median(stepsPerDay$totalSteps)
 ```
 
+```
+## [1] 10765
+```
+
 ## What is the average daily activity pattern?
-```{r avg_daily, fig.height=7, fig.width=7, message=FALSE}
+
+```r
 # Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis)
 #  and the average number of steps taken, averaged across all days (y-axis)
 meanPerInterval <-
@@ -66,19 +80,39 @@ plot(
         main = "Average steps per 5-minute interval",
         xlab = "Time of day (HHMM)"
 )
+```
+
+![](PA1_template_files/figure-html/avg_daily-1.png) 
+
+```r
 # Which 5-minute interval, on average across all the days in the dataset,
 #  contains the maximum number of steps?
 meanPerInterval[meanPerInterval$meanSteps == max(meanPerInterval$meanSteps),c(3,2)]
 ```
 
+```
+## Source: local data frame [1 x 2]
+## 
+##     hhmm meanSteps
+##   (fctr)     (dbl)
+## 1   0835  206.1698
+```
+
 
 
 ## Imputing missing values
-```{r impute, fig.height=7, fig.width=7, message=FALSE}
+
+```r
 # Calculate and report the total number of missing values in the dataset
 #  (i.e. the total number of rows with NAs)
 sum(is.na(actData$steps))
+```
 
+```
+## [1] 2304
+```
+
+```r
 # Devise a strategy for filling in all of the missing values in the dataset.
 #    (Used the mean for that 5-minute interval, stored in meanPerInterval.)
 a1 <- full_join(actData, meanPerInterval, by = "interval")
@@ -94,14 +128,31 @@ a2PerDay <-
 hist(a2PerDay$totalSteps, col = "red",
      xlab = "Number of steps per day",
      main = "Histogram of steps per day with NA replaced by mean steps for that interval")
+```
+
+![](PA1_template_files/figure-html/impute-1.png) 
+
+```r
 mean(a2PerDay$totalSteps)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 median(a2PerDay$totalSteps)
+```
+
+```
+## [1] 10766.19
 ```
 
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r diffs, fig.height=7, fig.width=7, message=FALSE}
+
+```r
 # Create a new factor variable in the dataset with two levels - "weekday" and "weekend" 
 #  indicating whether a given date is a weekday or weekend day.
 aw <- transform(a1, weekpart = ifelse(wday(date) %in% c(7,1), "weekend", "weekday"))
@@ -119,4 +170,6 @@ xyplot(
         data = awMean, type = "l", layout = c(1, 2)
 )
 ```
+
+![](PA1_template_files/figure-html/diffs-1.png) 
 
