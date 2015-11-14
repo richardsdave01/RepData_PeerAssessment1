@@ -127,7 +127,7 @@ a2PerDay <-
         a2 %>% group_by(date) %>% summarise(totalSteps = sum(steps))
 hist(a2PerDay$totalSteps, col = "red",
      xlab = "Number of steps per day",
-     main = "Histogram of steps per day with NA replaced by mean steps for that interval")
+     main = "Steps per day with NA replaced by mean steps for that interval")
 ```
 
 ![](PA1_template_files/figure-html/impute-1.png) 
